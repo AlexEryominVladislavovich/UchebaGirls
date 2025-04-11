@@ -1,17 +1,30 @@
 from rest_framework import serializers
-from .models import Car, Phone
+from .models import Car, Phone, Category, Profile
 
-class CarsSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = '__all__'
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['name']
+
+class CarSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(many=True)
+
     class Meta:
         model = Car
-        fields = ['nameCar', 'priceCar']
+        fields = ['__all__']
 
 
 class PhoneSerializer(serializers.Serializer):
     namePhone = serializers.CharField(max_length=30)
     pricePhone = serializers.IntegerField()
     seria = serializers.CharField(max_length=30)
-    category = serializers.ForeignKey('Category', on_delete=models.PROTECT, null=True)
+    category = CategorySerializer(many = True)
 
     def create(self, validate_data):
         return Phone.objects.create(**validate_data)

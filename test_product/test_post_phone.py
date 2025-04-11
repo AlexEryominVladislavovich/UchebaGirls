@@ -4,7 +4,7 @@ import requests
 url = 'http://127.0.0.1:8000/api/token/'
 data = {
     'username':'admin',
-    'password':'123456qwerty',
+    'password':'123',
 }
 
 responses = requests.post(url, json=data)
